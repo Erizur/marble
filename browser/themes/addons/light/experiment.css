@@ -3,8 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 /* Proton Light theme */
-@import url("chrome://browser/skin/light-dark-overrides.css");
-
+@media (-moz-proton)	{ 
+	@import url("chrome://browser/skin/light-dark-overrides.css");
+}
 @media not (-moz-proton) {
 	/* Photon overrides */
 	:root {
@@ -142,21 +143,9 @@
 				#urlbar[breakout-extend] #urlbar-background {
 					border-color: solid 1px var(--photon-tab-outline) !important;
 				}
-				menupopup:not(#ContentSelectDropdownPopup), richlistbox:not(#PopupSearchAutoComplete richlistbox), #tab-preview-panel, panel[type="autocomplete-richlistbox"] {
-					--panel-background: var(--arrowpanel-background) !important;
-				}
-			}
-			@media not ((-moz-windows-accent-color-in-titlebar) or (-moz-bool-pref: "uc.toolbar.transparency")) {
-				:root:not([lwtheme="true"]) {
-					#navigator-toolbox {
-						background: #202340 !important;
-					}
-					#titlebar {
-						color: rgb(251, 251, 254) !important;
-						--toolbarbutton-icon-fill: rgb(251, 251, 254);
-					}
-					#titlebar #firefox-view-button[open] {
-						--toolbarbutton-icon-fill: #5b5b66;
+				@media not (-moz-platform: windows){
+					menupopup:not(#ContentSelectDropdownPopup), richlistbox:not(#PopupSearchAutoComplete richlistbox), #tab-preview-panel, panel[type="autocomplete-richlistbox"] {
+						--panel-background: var(--arrowpanel-background) !important;
 					}
 				}
 			}
