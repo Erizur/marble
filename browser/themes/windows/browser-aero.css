@@ -237,7 +237,7 @@
           }
         }
       }
-    }
+    
   
     @media not (-moz-windows-modern) {
       :root {
@@ -250,7 +250,7 @@
         margin-inline-end: 3px;
       }
   
-      /* These should be hidden w/ glass enabled. Windows draws its own buttons. */
+      /* These should be hidden w/ glass enabled. Windows draws its own buttons. Not for Basic/XP though! */
       .titlebar-button {
         display: none;
       }
@@ -316,6 +316,7 @@
       }*/
     }
   }
+}
   
   /* Aero Basic */
   @media not (-moz-windows-compositor) {

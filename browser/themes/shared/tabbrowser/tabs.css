@@ -1052,6 +1052,7 @@ toolbar:not(#TabsToolbar) #firefox-view-button {
   /* Show full height tab separators on selected tabs. */
   #tabbrowser-tabs:not([movingtab]) > #tabbrowser-arrowscrollbox > .tabbrowser-tab[beforeselected-visible]::after,
   #tabbrowser-tabs[movingtab] > #tabbrowser-arrowscrollbox > .tabbrowser-tab[visuallyselected]::before,
+  .tabbrowser-tab[visuallyselected]::before,
   .tabbrowser-tab[visuallyselected]::after {
     border-color: var(--tab-selected-outline-color);
     margin-top: 0;

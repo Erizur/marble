@@ -21,9 +21,6 @@
         --toolbarbutton-background: hsla(0,0%,70%,.2) !important;
         --toolbarbutton-hover-background: hsla(0,0%,70%,.4) !important;
         --toolbarbutton-active-background: hsla(0,0%,70%,.6) !important;
-        --arrowpanel-background: #4a4a4f !important;
-        --arrowpanel-border: #2a2a2e !important;
-        --arrowpanel-border-color: #27272b !important;
         --button-active-bgcolor: rgba(249,249,250,.15) !important;
         --input-bgcolor: rgb(60, 60, 64) !important;
         --input-border-color: rgb(90, 90, 94) !important;
@@ -75,14 +72,19 @@
             background: #323234 !important;
         }
         @media not (-moz-platform: windows){
+            :root {
+                --arrowpanel-background: #4a4a4f !important;
+                --arrowpanel-border: #2a2a2e !important;
+                --arrowpanel-border-color: #27272b !important;
+            }
+
             menupopup:not(#ContentSelectDropdownPopup), richlistbox:not(#PopupSearchAutoComplete richlistbox), #tab-preview-panel, panel[type="autocomplete-richlistbox"] {
                 --panel-background: var(--arrowpanel-background) !important;
             }
         }
-        /*
         #tabbrowser-tabs:not([movingtab]) > #tabbrowser-arrowscrollbox > .tabbrowser-tab > .tab-stack > .tab-background[multiselected="true"]:-moz-lwtheme {
             background: #464648 !important;
-        }*/
+        }
     }
 }
 
