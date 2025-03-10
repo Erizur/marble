@@ -24,14 +24,14 @@
         "right center"
       ],
       "additional_backgrounds_tiling": ["no-repeat"],
-      "zap_gradient": "linear-gradient(90deg, #9059FF 0%, #FF4AA2 52.08%, #FFBD4F 100%)"
+      "zap_gradient": "linear-gradient(90deg, blue 0%, white 100%)"
     },
     "colors": {
-      "frame": "hsla(240, 20%, 98%, 1)",
+      "frame": "rgb(206, 206, 253)",
       "toolbar": "hsla(0, 0%, 100%, .76)",
       "button_background_active": "hsla(240, 26%, 11%, .16)",
       "button_background_hover": "hsla(240, 26%, 11%, .08)",
-      "icons": "hsla(258, 66%, 48%, 1)",
+      "icons": "rgb(13, 76, 196)",
       "icons_attention": "hsla(180, 100%, 32%, 1)",
       "toolbar_text": "hsla(261, 53%, 15%, 1)",
       "toolbar_vertical_separator": "hsla(261, 53%, 15%, .2)",
@@ -46,13 +46,13 @@
       "toolbar_bottom_separator": "hsla(261, 53%, 15%, .32)",
       "bookmark_text": "hsla(261, 53%, 15%, 1)",
       "tab_text": "hsla(261, 53%, 15%, 1)",
-      "tab_background_text": "hsla(261, 53%, 15%, 1)",
+      "tab_background_text": "rgb(32, 51, 151)",
       "tab_background_separator": "hsla(261, 53%, 15%, 1)",
-      "tab_line": "hsla(265, 100%, 72%, 1)",
+      "tab_line": "rgb(65, 113, 255)",
       "tab_loading": "hsla(265, 100%, 72%, 1)",
       "ntp_background": "#F9F9FB",
       "ntp_text": "hsla(261, 53%, 15%, 1)",
-      "popup": "hsla(254, 46%, 21%, 1)",
+      "popup": "rgb(26, 54, 91)",
       "popup_text": "hsla(255, 100%, 94%, 1)",
       "popup_border": "hsla(255, 100%, 94%, .32)",
       "popup_highlight": "hsla(255, 100%, 94%, .12)",
@@ -77,7 +77,7 @@
         "right center"
       ],
       "additional_backgrounds_tiling": ["no-repeat"],
-      "zap_gradient": "linear-gradient(90deg, #9059FF 0%, #FF4AA2 52.08%, #FFBD4F 100%)"
+      "zap_gradient": "linear-gradient(90deg, purple 0%, black 100%)"
     },
     "colors": {
       "frame": "hsla(240, 20%, 98%, 1)",

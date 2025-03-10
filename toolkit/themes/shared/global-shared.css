@@ -457,3 +457,22 @@ button.text-link .button-text {
 .deemphasized {
   color: var(--text-color-deemphasized);
 }
+
+@media not (-moz-proton) {
+  window {
+    color-scheme: light !important;
+  }
+  
+  panel, menupopup {
+    --arrowpanel-header-back-icon-padding: 8px !important;
+  }
+  
+  menupopup {
+    --nested-margin: -3px !important;
+  }
+  menupopup > menu > menupopup {
+    --nested-margin: -7px !important;
+    margin-inline-start: -4px !important;
+    margin-top: var(--nested-margin) !important;
+  }
+}

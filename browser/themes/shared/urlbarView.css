@@ -1067,3 +1067,39 @@
   background-color: var(--urlbarView-action-button-selected-color);
   border-color: light-dark(transparent, white);
 }
+
+@media not (-moz-proton) {
+  .search-panel-header > label {
+    opacity: 0.6 !important;
+  }
+  
+  .search-setting-button > .button-box > .button-icon {
+    fill-opacity: 0.6 !important;
+  }
+  
+  #urlbar-input,
+  .searchbar-textbox {
+    color-scheme: light !important;
+  }
+  #urlbar-input::placeholder,
+  .searchbar-textbox::placeholder {
+    opacity: 0.54 !important;
+  }
+  :root[lwt-toolbar-field-focus-brighttext] #urlbar-input::selection,
+  :root[lwt-toolbar-field-focus-brighttext] .searchbar-textbox::selection {
+    background-color: var(--lwt-toolbar-field-highlight, HighlightText) !important;
+    color: var(--lwt-toolbar-field-highlight-text, Highlight) !important;
+  }
+  
+  #search-container {
+    padding-block: 4px !important;
+  }
+  :root[uidensity=compact] #search-container {
+    padding-block: 3px !important;
+  }
+  
+  .urlbarView {
+    --toolbarbutton-border-radius: 0 !important;
+  }
+  
+}
