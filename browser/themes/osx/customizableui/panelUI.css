@@ -4,41 +4,6 @@
 
 @import "chrome://browser/skin/customizableui/panelUI-shared.css";
 
-panel[type="arrow"][side="top"],
-panel[type="arrow"][side="bottom"] {
-  margin-inline: -16px;
-}
-
-panel[type="arrow"][side="left"],
-panel[type="arrow"][side="right"] {
-  margin-block: -16px;
-}
-
-#customizationui-widget-panel[viewId="PanelUI-profiler"][type="arrow"][side="top"],
-#customizationui-widget-panel[viewId="PanelUI-profiler"][type="arrow"][side="bottom"] {
-  margin-inline: -8px;
-}
-
-#customizationui-widget-panel[viewId="PanelUI-profiler"][type="arrow"][side="left"],
-#customizationui-widget-panel[viewId="PanelUI-profiler"][type="arrow"][side="right"] {
-  margin-block: -8px;
-}
-
-#downloadsPanel,
-#widget-overflow,
-#appMenu-popup,
-#customizationui-widget-panel,
-#identity-popup,
-#permission-popup,
-#protections-popup,
-#appMenu-notification-popup {
-  margin-top: -1px; /* Overrides value from panelUI.inc.css */
-}
-
-#BMB_bookmarksPopup {
-  margin-top: -4px; /* Overrides value from panelUI.inc.css */
-}
-
 .panel-subview-body {
   scrollbar-color: color-mix(in srgb, currentColor 26%, transparent) transparent;
 }
