@@ -41,7 +41,7 @@
       :root {
         --lwt-text-color: black !important;
       }
-  }
+    }
   }
 
   @media not (-moz-windows-modern) {

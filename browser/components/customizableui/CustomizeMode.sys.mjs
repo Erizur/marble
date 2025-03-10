@@ -1394,7 +1394,7 @@ CustomizeMode.prototype = {
   openAddonsManagerThemes(aEvent) {
     aEvent.target.parentNode.parentNode.hidePopup();
     /*AMTelemetry.recordLinkEvent({ object: "customize", value: "manageThemes" });*/
-    this.window.BrowserOpenAddonsMgr("addons://list/theme");
+    this.window.BrowserAddonUI.openAddonsMgr("addons://list/theme");
   },
 
   getMoreThemes(aEvent) {

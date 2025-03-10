@@ -317,6 +317,12 @@ LightweightThemeConsumer.prototype = {
       root.removeAttribute("lwtheme-image");
     }
 
+    if (hasTheme && theme.additionalBackgrounds?.length > 0) {
+      root.setAttribute("lwtheme-additional-images", "true");
+    } else {
+      root.removeAttribute("lwtheme-additional-images");
+    }
+
     this._setExperiment(hasTheme, themeData.experiment, theme.experimental);
     _setImage(this._win, root, hasTheme, "--lwt-header-image", theme.headerURL);
     _setImage(

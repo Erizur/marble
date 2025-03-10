@@ -192,6 +192,20 @@
   }
 }
 
+/* Set apperance to none when using Basic theme with images. 
+   For some unknown reason, when the titlebar draws the basic frame (from uxtheme itself),
+   it draws on top of lwthemes with images, making some themes look ugly. Isn't that baaad?
+*/
+@media not (-moz-windows-compositor){
+  :root[tabsintitlebar]:is([lwtheme-image], [lwtheme-additional-images]) #titlebar {
+    appearance: none;
+  }
+
+  :root[tabsintitlebar][sizemode="maximized"]:is([lwtheme-image], [lwtheme-additional-images]) #titlebar {
+    margin-top: 8px;
+  }
+}
+
 .titlebar-buttonbox {
   /* For all Windows configurations except for Windows Aero and Windows Aero Basic,
    * the default -moz-default-appearance of -moz-window-button-box and
