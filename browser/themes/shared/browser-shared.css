@@ -293,7 +293,6 @@
       --toolbarbutton-icon-fill-opacity: 1 !important;
       --toolbarbutton-hover-background: color-mix(in srgb, currentColor 15%, transparent) !important;
       --toolbarbutton-active-background: color-mix(in srgb, currentColor 30%, transparent) !important;
-      --panel-separator-color: hsla(210,4%,10%,.14) !important;
     }
     :root[lwtheme]:not([style*="--autocomplete-popup-highlight-background:"]) {
       --autocomplete-popup-highlight-background: Highlight !important;
@@ -346,7 +345,14 @@
     }
     #navigator-toolbox {
       --tabs-border-color: rgba(0, 0, 0, .3) !important;
-      border-bottom: 1px solid var(--chrome-content-separator-color) !important;
+
+      :root:not([lwtheme]) & {
+        outline: 1px solid var(--chrome-content-separator-color) !important;
+      }
+
+      :root[lwtheme] & {
+        border-bottom: 1px solid var(--chrome-content-separator-color) !important;
+      }
     }
     :root:not([style*="--toolbarbutton-hover-background:"]) toolbar[brighttext] {
       --toolbarbutton-hover-background: hsla(0, 0%, 70%, 0.4) !important;
@@ -375,7 +381,7 @@
 
       @media not (-moz-windows-modern) {
         @media (-moz-windows-default-theme), (-moz-windows-compositor) {
-          #TabsToolbar {
+          :root:not([lwtheme]) #TabsToolbar {
             color: black;
             --toolbarbutton-icon-fill: currentColor;
           }

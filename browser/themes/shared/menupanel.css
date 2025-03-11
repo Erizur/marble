@@ -11,11 +11,11 @@
  * assets for zoom/fullscreen/sync.
  */
 #appMenu-zoomEnlarge-button2 {
-  list-style-image: url(chrome://browser/skin/add-circle-fill.svg);
+  list-style-image: url(chrome://global/skin/icons/plus.svg);
 }
 
 #appMenu-zoomReduce-button2 {
-  list-style-image: url(chrome://browser/skin/subtract-circle-fill.svg);
+  list-style-image: url(chrome://global/skin/icons/minus.svg);
 }
 
 #appMenu-fullscreen-button2 {
@@ -153,7 +153,6 @@
     border-radius: 1000px !important;
     border: 1px solid var(--panel-separator-color) !important;
     padding-inline: 10px !important;
-    background-color: var(--arrowpanel-dimmed) !important;
   }
   #appMenu-zoomReset-button2:hover .toolbarbutton-text {
     background-color: var(--arrowpanel-dimmed-further) !important;
@@ -161,8 +160,20 @@
   #appMenu-zoomReset-button2:hover:active .toolbarbutton-text {
     background-color: var(--arrowpanel-dimmed-even-further) !important;
   }
-  #appMenu-zoom-controls toolbarbutton:not(:hover, :active) .toolbarbutton-icon {
+  #appMenu-zoom-controls toolbarbutton:not(:hover, :active) {
     background-color: transparent !important;
+  }
+  /* This pushes down the find/translate button and aligns the zoom seperator */
+  #appMenu-find-button2 {
+    margin-bottom: 8px !important;
+  }
+  @media (-moz-bool-pref: "browser.translations.enable") {
+    #appMenu-translate-button {
+      margin-bottom: 8px !important;
+    }
+    #appMenu-find-button2 {
+      margin-bottom: unset !important;
+    }
   }
   /* Separators */
   #appMenu-zoom-controls::after {
