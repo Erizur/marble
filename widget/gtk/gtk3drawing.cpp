@@ -1159,6 +1159,46 @@ static gint moz_gtk_arrow_paint(cairo_t* cr, GdkRectangle* rect,
   return MOZ_GTK_SUCCESS;
 }
 
+static gint moz_gtk_combo_box_entry_button_paint(cairo_t* cr,
+                                                 GdkRectangle* rect,
+                                                 GtkWidgetState* state,
+                                                 gboolean input_focus,
+                                                 GtkTextDirection direction) {
+  gint x_displacement, y_displacement;
+  GdkRectangle arrow_rect, real_arrow_rect;
+  GtkStateFlags state_flags = GetStateFlagsFromGtkWidgetState(state);
+  GtkStyleContext* style;
+
+  GtkWidget* comboBoxEntry = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
+  if (!comboBoxEntry) {
+    return MOZ_GTK_UNKNOWN_WIDGET;
+  }
+
+  moz_gtk_button_paint(cr, rect, state, GTK_RELIEF_NORMAL, comboBoxEntry,
+                       direction);
+  calculate_button_inner_rect(comboBoxEntry, rect, &arrow_rect, direction);
+
+  if (state_flags & GTK_STATE_FLAG_ACTIVE) {
+    style = gtk_widget_get_style_context(comboBoxEntry);
+    StyleContextSetScale(style, state->image_scale);
+    gtk_style_context_get_style(style, "child-displacement-x", &x_displacement,
+                                "child-displacement-y", &y_displacement, NULL);
+    arrow_rect.x += x_displacement;
+    arrow_rect.y += y_displacement;
+  }
+
+  GtkWidget* arrow = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_ARROW);
+  if (!arrow) {
+    return MOZ_GTK_UNKNOWN_WIDGET;
+  }
+  calculate_arrow_rect(arrow, &arrow_rect, &real_arrow_rect, direction);
+
+  style = GetStyleContext(MOZ_GTK_COMBOBOX_ENTRY_ARROW, state->image_scale);
+  gtk_render_arrow(style, cr, ARROW_DOWN, real_arrow_rect.x, real_arrow_rect.y,
+                   real_arrow_rect.width);
+  return MOZ_GTK_SUCCESS;
+}
+
 static gint moz_gtk_toolbar_paint(cairo_t* cr, GdkRectangle* rect,
                                   GtkWidgetState* state,
                                   GtkTextDirection direction) {
@@ -1700,6 +1740,9 @@ gint moz_gtk_get_widget_border(WidgetNodeType widget, gint* left, gint* top,
     }
     case MOZ_GTK_TREE_HEADER_SORTARROW:
       w = GetWidget(MOZ_GTK_TREE_HEADER_SORTARROW);
+      break;
+    case MOZ_GTK_DROPDOWN_ARROW:
+      w = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
       break;
     case MOZ_GTK_DROPDOWN: {
       /* We need to account for the arrow on the dropdown, so text
