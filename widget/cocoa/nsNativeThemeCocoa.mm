@@ -2396,6 +2396,32 @@ Maybe<nsNativeThemeCocoa::WidgetInfo> nsNativeThemeCocoa::ComputeWidgetInfo(
       // Do nothing: progress and meter bars cases will draw chunks.
       break;
 
+    case StyleAppearance::Treetwisty:
+      return Some(WidgetInfo::Button(
+          ButtonParams{ComputeControlParams(aFrame, elementState),
+                       ButtonType::eTreeTwistyPointingRight}));
+
+    case StyleAppearance::Treetwistyopen:
+      return Some(WidgetInfo::Button(
+          ButtonParams{ComputeControlParams(aFrame, elementState),
+                       ButtonType::eTreeTwistyPointingDown}));
+
+    case StyleAppearance::Treeheadercell:
+      return Some(WidgetInfo::TreeHeaderCell(
+          ComputeTreeHeaderCellParams(aFrame, elementState)));
+
+    case StyleAppearance::Treeitem:
+    case StyleAppearance::Treeview:
+      return Some(WidgetInfo::ColorFill(sRGBColor(1.0, 1.0, 1.0, 1.0)));
+
+    case StyleAppearance::Treeheader:
+      // do nothing, taken care of by individual header cells
+    case StyleAppearance::Treeheadersortarrow:
+      // do nothing, taken care of by treeview header
+    case StyleAppearance::Treeline:
+      // do nothing, these lines don't exist on macos
+      break;
+
     case StyleAppearance::Range: {
       Maybe<ScaleParams> params = ComputeHTMLScaleParams(aFrame, elementState);
       if (params) {
@@ -3170,6 +3196,15 @@ bool nsNativeThemeCocoa::ThemeSupportsWidget(nsPresContext* aPresContext,
 
     case StyleAppearance::Tabpanels:
     case StyleAppearance::Tab:
+
+    case StyleAppearance::Treetwisty:
+    case StyleAppearance::Treetwistyopen:
+    case StyleAppearance::Treeview:
+    case StyleAppearance::Treeheader:
+    case StyleAppearance::Treeheadercell:
+    case StyleAppearance::Treeheadersortarrow:
+    case StyleAppearance::Treeitem:
+    case StyleAppearance::Treeline:
 
     case StyleAppearance::Range:
       return !IsWidgetStyled(aPresContext, aFrame, aAppearance);

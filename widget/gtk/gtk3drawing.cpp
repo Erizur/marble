@@ -853,6 +853,17 @@ static gint moz_gtk_scale_thumb_paint(cairo_t* cr, GdkRectangle* rect,
   return MOZ_GTK_SUCCESS;
 }
 
+static gint moz_gtk_gripper_paint(cairo_t* cr, GdkRectangle* rect,
+                                  GtkWidgetState* state,
+                                  GtkTextDirection direction) {
+  GtkStyleContext* style =
+      GetStyleContext(MOZ_GTK_GRIPPER, state->image_scale, direction,
+                      GetStateFlagsFromGtkWidgetState(state));
+  gtk_render_background(style, cr, rect->x, rect->y, rect->width, rect->height);
+  gtk_render_frame(style, cr, rect->x, rect->y, rect->width, rect->height);
+  return MOZ_GTK_SUCCESS;
+}
+
 static gint moz_gtk_hpaned_paint(cairo_t* cr, GdkRectangle* rect,
                                  GtkWidgetState* state) {
   GtkStyleContext* style =
@@ -953,7 +964,90 @@ static gint moz_gtk_treeview_paint(cairo_t* cr, GdkRectangle* rect,
   return MOZ_GTK_SUCCESS;
 }
 
-/* See gtk_separator_draw() for reference. */
+static gint moz_gtk_tree_header_cell_paint(cairo_t* cr,
+                                           const GdkRectangle* aRect,
+                                           GtkWidgetState* state,
+                                           gboolean isSorted,
+                                           GtkTextDirection direction) {
+  moz_gtk_button_paint(cr, aRect, state, GTK_RELIEF_NORMAL,
+                       GetWidget(MOZ_GTK_TREE_HEADER_CELL), direction);
+  return MOZ_GTK_SUCCESS;
+}
+
+static gint moz_gtk_tree_header_sort_arrow_paint(cairo_t* cr,
+                                                 GdkRectangle* rect,
+                                                 GtkWidgetState* state,
+                                                 GtkArrowType arrow_type,
+                                                 GtkTextDirection direction) {
+  GdkRectangle arrow_rect;
+  gdouble arrow_angle;
+  GtkStyleContext* style;
+
+  /* hard code these values */
+  arrow_rect.width = 11;
+  arrow_rect.height = 11;
+  arrow_rect.x = rect->x + (rect->width - arrow_rect.width) / 2;
+  arrow_rect.y = rect->y + (rect->height - arrow_rect.height) / 2;
+  style = GetStyleContext(MOZ_GTK_TREE_HEADER_SORTARROW, state->image_scale,
+                          direction, GetStateFlagsFromGtkWidgetState(state));
+  switch (arrow_type) {
+    case GTK_ARROW_LEFT:
+      arrow_angle = ARROW_LEFT;
+      break;
+    case GTK_ARROW_RIGHT:
+      arrow_angle = ARROW_RIGHT;
+      break;
+    case GTK_ARROW_DOWN:
+      arrow_angle = ARROW_DOWN;
+      break;
+    default:
+      arrow_angle = ARROW_UP;
+      break;
+  }
+  if (arrow_type != GTK_ARROW_NONE)
+    gtk_render_arrow(style, cr, arrow_angle, arrow_rect.x, arrow_rect.y,
+                     arrow_rect.width);
+  return MOZ_GTK_SUCCESS;
+}
+
+/* See gtk_expander_paint() for reference.
+ */
+static gint moz_gtk_treeview_expander_paint(cairo_t* cr, GdkRectangle* rect,
+                                            GtkWidgetState* state,
+                                            GtkExpanderStyle expander_state,
+                                            GtkTextDirection direction) {
+  /* Because the frame we get is of the entire treeview, we can't get the
+   * precise event state of one expander, thus rendering hover and active
+   * feedback useless. */
+  GtkStateFlags state_flags =
+      state->disabled ? GTK_STATE_FLAG_INSENSITIVE : GTK_STATE_FLAG_NORMAL;
+
+  if (state->inHover)
+    state_flags =
+        static_cast<GtkStateFlags>(state_flags | GTK_STATE_FLAG_PRELIGHT);
+  if (state->selected)
+    state_flags =
+        static_cast<GtkStateFlags>(state_flags | GTK_STATE_FLAG_SELECTED);
+
+  /* GTK_STATE_FLAG_ACTIVE controls expanded/colapsed state rendering
+   * in gtk_render_expander()
+   */
+  if (expander_state == GTK_EXPANDER_EXPANDED)
+    state_flags =
+        static_cast<GtkStateFlags>(state_flags | checkbox_check_state);
+  else
+    state_flags =
+        static_cast<GtkStateFlags>(state_flags & ~(checkbox_check_state));
+
+  GtkStyleContext* style = GetStyleContext(
+      MOZ_GTK_TREEVIEW_EXPANDER, state->image_scale, direction, state_flags);
+  gtk_render_expander(style, cr, rect->x, rect->y, rect->width, rect->height);
+
+  return MOZ_GTK_SUCCESS;
+}
+
+/* See gtk_separator_draw() for reference.
+ */
 static gint moz_gtk_combo_box_paint(cairo_t* cr, const GdkRectangle* aRect,
                                     GtkWidgetState* state,
                                     GtkTextDirection direction) {
@@ -1062,46 +1156,6 @@ static gint moz_gtk_arrow_paint(cairo_t* cr, GdkRectangle* rect,
       MOZ_GTK_BUTTON_ARROW, state->image_scale, direction, state_flags);
   gtk_render_arrow(style, cr, arrow_angle, arrow_rect.x, arrow_rect.y,
                    arrow_rect.width);
-  return MOZ_GTK_SUCCESS;
-}
-
-static gint moz_gtk_combo_box_entry_button_paint(cairo_t* cr,
-                                                 GdkRectangle* rect,
-                                                 GtkWidgetState* state,
-                                                 gboolean input_focus,
-                                                 GtkTextDirection direction) {
-  gint x_displacement, y_displacement;
-  GdkRectangle arrow_rect, real_arrow_rect;
-  GtkStateFlags state_flags = GetStateFlagsFromGtkWidgetState(state);
-  GtkStyleContext* style;
-
-  GtkWidget* comboBoxEntry = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
-  if (!comboBoxEntry) {
-    return MOZ_GTK_UNKNOWN_WIDGET;
-  }
-
-  moz_gtk_button_paint(cr, rect, state, GTK_RELIEF_NORMAL, comboBoxEntry,
-                       direction);
-  calculate_button_inner_rect(comboBoxEntry, rect, &arrow_rect, direction);
-
-  if (state_flags & GTK_STATE_FLAG_ACTIVE) {
-    style = gtk_widget_get_style_context(comboBoxEntry);
-    StyleContextSetScale(style, state->image_scale);
-    gtk_style_context_get_style(style, "child-displacement-x", &x_displacement,
-                                "child-displacement-y", &y_displacement, NULL);
-    arrow_rect.x += x_displacement;
-    arrow_rect.y += y_displacement;
-  }
-
-  GtkWidget* arrow = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_ARROW);
-  if (!arrow) {
-    return MOZ_GTK_UNKNOWN_WIDGET;
-  }
-  calculate_arrow_rect(arrow, &arrow_rect, &real_arrow_rect, direction);
-
-  style = GetStyleContext(MOZ_GTK_COMBOBOX_ENTRY_ARROW, state->image_scale);
-  gtk_render_arrow(style, cr, ARROW_DOWN, real_arrow_rect.x, real_arrow_rect.y,
-                   real_arrow_rect.width);
   return MOZ_GTK_SUCCESS;
 }
 
@@ -1647,9 +1701,6 @@ gint moz_gtk_get_widget_border(WidgetNodeType widget, gint* left, gint* top,
     case MOZ_GTK_TREE_HEADER_SORTARROW:
       w = GetWidget(MOZ_GTK_TREE_HEADER_SORTARROW);
       break;
-    case MOZ_GTK_DROPDOWN_ARROW:
-      w = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
-      break;
     case MOZ_GTK_DROPDOWN: {
       /* We need to account for the arrow on the dropdown, so text
        * doesn't come too close to the arrow, or in some cases spill
@@ -1732,9 +1783,12 @@ gint moz_gtk_get_widget_border(WidgetNodeType widget, gint* left, gint* top,
     case MOZ_GTK_RADIOBUTTON:
     case MOZ_GTK_SCALE_THUMB_HORIZONTAL:
     case MOZ_GTK_SCALE_THUMB_VERTICAL:
+    case MOZ_GTK_GRIPPER:
     case MOZ_GTK_PROGRESS_CHUNK:
     case MOZ_GTK_PROGRESS_CHUNK_INDETERMINATE:
     case MOZ_GTK_PROGRESS_CHUNK_VERTICAL_INDETERMINATE:
+    case MOZ_GTK_TREEVIEW_EXPANDER:
+    case MOZ_GTK_TOOLBAR_SEPARATOR:
     case MOZ_GTK_HEADER_BAR:
     case MOZ_GTK_HEADER_BAR_MAXIMIZED:
     case MOZ_GTK_HEADER_BAR_BUTTON_CLOSE:
@@ -1748,6 +1802,7 @@ gint moz_gtk_get_widget_border(WidgetNodeType widget, gint* left, gint* top,
     case MOZ_GTK_WINDOW_DECORATION_SOLID:
     case MOZ_GTK_RESIZER:
     case MOZ_GTK_TOOLBARBUTTON_ARROW:
+    case MOZ_GTK_TOOLBAR:
     case MOZ_GTK_TAB_SCROLLARROW:
       return MOZ_GTK_SUCCESS;
     default:
@@ -1858,6 +1913,34 @@ void moz_gtk_get_arrow_size(WidgetNodeType widgetType, gint* width,
     *width = 0;
     *height = 0;
   }
+}
+
+gint moz_gtk_get_toolbar_separator_width(gint* size) {
+  gboolean wide_separators;
+  gint separator_width;
+  GtkBorder border;
+
+  GtkStyleContext* style = GetStyleContext(MOZ_GTK_TOOLBAR);
+  gtk_style_context_get_style(style, "space-size", size, "wide-separators",
+                              &wide_separators, "separator-width",
+                              &separator_width, NULL);
+  /* Just in case... */
+  gtk_style_context_get_border(style, gtk_style_context_get_state(style),
+                               &border);
+  *size = MAX(*size, (wide_separators ? separator_width : border.left));
+  return MOZ_GTK_SUCCESS;
+}
+
+gint moz_gtk_get_expander_size(gint* size) {
+  GtkStyleContext* style = GetStyleContext(MOZ_GTK_EXPANDER);
+  gtk_style_context_get_style(style, "expander-size", size, NULL);
+  return MOZ_GTK_SUCCESS;
+}
+
+gint moz_gtk_get_treeview_expander_size(gint* size) {
+  GtkStyleContext* style = GetStyleContext(MOZ_GTK_TREEVIEW);
+  gtk_style_context_get_style(style, "expander-size", size, NULL);
+  return MOZ_GTK_SUCCESS;
 }
 
 void moz_gtk_get_entry_min_height(gint* min_content_height,
@@ -2126,8 +2209,18 @@ gint moz_gtk_widget_paint(WidgetNodeType widget, cairo_t* cr,
                           direction, GetStateFlagsFromGtkWidgetState(state));
       return moz_gtk_entry_paint(cr, rect, state, style, widget);
     }
+    case MOZ_GTK_GRIPPER:
+      return moz_gtk_gripper_paint(cr, rect, state, direction);
     case MOZ_GTK_TREEVIEW:
       return moz_gtk_treeview_paint(cr, rect, state, direction);
+    case MOZ_GTK_TREE_HEADER_CELL:
+      return moz_gtk_tree_header_cell_paint(cr, rect, state, flags, direction);
+    case MOZ_GTK_TREE_HEADER_SORTARROW:
+      return moz_gtk_tree_header_sort_arrow_paint(
+          cr, rect, state, (GtkArrowType)flags, direction);
+    case MOZ_GTK_TREEVIEW_EXPANDER:
+      return moz_gtk_treeview_expander_paint(
+          cr, rect, state, (GtkExpanderStyle)flags, direction);
     case MOZ_GTK_ENTRY:
     case MOZ_GTK_DROPDOWN_ENTRY: {
       GtkStyleContext* style =
