@@ -1065,6 +1065,97 @@ static gint moz_gtk_arrow_paint(cairo_t* cr, GdkRectangle* rect,
   return MOZ_GTK_SUCCESS;
 }
 
+static gint moz_gtk_combo_box_entry_button_paint(cairo_t* cr,
+                                                 GdkRectangle* rect,
+                                                 GtkWidgetState* state,
+                                                 gboolean input_focus,
+                                                 GtkTextDirection direction) {
+  gint x_displacement, y_displacement;
+  GdkRectangle arrow_rect, real_arrow_rect;
+  GtkStateFlags state_flags = GetStateFlagsFromGtkWidgetState(state);
+  GtkStyleContext* style;
+
+  GtkWidget* comboBoxEntry = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
+  if (!comboBoxEntry) {
+    return MOZ_GTK_UNKNOWN_WIDGET;
+  }
+
+  moz_gtk_button_paint(cr, rect, state, GTK_RELIEF_NORMAL, comboBoxEntry,
+                       direction);
+  calculate_button_inner_rect(comboBoxEntry, rect, &arrow_rect, direction);
+
+  if (state_flags & GTK_STATE_FLAG_ACTIVE) {
+    style = gtk_widget_get_style_context(comboBoxEntry);
+    StyleContextSetScale(style, state->image_scale);
+    gtk_style_context_get_style(style, "child-displacement-x", &x_displacement,
+                                "child-displacement-y", &y_displacement, NULL);
+    arrow_rect.x += x_displacement;
+    arrow_rect.y += y_displacement;
+  }
+
+  GtkWidget* arrow = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_ARROW);
+  if (!arrow) {
+    return MOZ_GTK_UNKNOWN_WIDGET;
+  }
+  calculate_arrow_rect(arrow, &arrow_rect, &real_arrow_rect, direction);
+
+  style = GetStyleContext(MOZ_GTK_COMBOBOX_ENTRY_ARROW, state->image_scale);
+  gtk_render_arrow(style, cr, ARROW_DOWN, real_arrow_rect.x, real_arrow_rect.y,
+                   real_arrow_rect.width);
+  return MOZ_GTK_SUCCESS;
+}
+
+static gint moz_gtk_toolbar_paint(cairo_t* cr, GdkRectangle* rect,
+                                  GtkWidgetState* state,
+                                  GtkTextDirection direction) {
+  GtkStyleContext* style =
+      GetStyleContext(MOZ_GTK_TOOLBAR, state->image_scale, direction);
+  gtk_render_background(style, cr, rect->x, rect->y, rect->width, rect->height);
+  gtk_render_frame(style, cr, rect->x, rect->y, rect->width, rect->height);
+  return MOZ_GTK_SUCCESS;
+}
+
+/* See _gtk_toolbar_paint_space_line() for reference.
+ */
+static gint moz_gtk_toolbar_separator_paint(cairo_t* cr, GdkRectangle* rect,
+                                            GtkWidgetState* state,
+                                            GtkTextDirection direction) {
+  gint separator_width;
+  gint paint_width;
+  gboolean wide_separators;
+
+  /* Defined as constants in GTK+ 2.10.14 */
+  const double start_fraction = 0.2;
+  const double end_fraction = 0.8;
+
+  GtkStyleContext* style = GetStyleContext(MOZ_GTK_TOOLBAR, state->image_scale);
+  gtk_style_context_get_style(style, "wide-separators", &wide_separators,
+                              "separator-width", &separator_width, NULL);
+
+  style =
+      GetStyleContext(MOZ_GTK_TOOLBAR_SEPARATOR, state->image_scale, direction);
+  if (wide_separators) {
+    if (separator_width > rect->width) separator_width = rect->width;
+
+    gtk_render_frame(style, cr, rect->x + (rect->width - separator_width) / 2,
+                     rect->y + rect->height * start_fraction, separator_width,
+                     rect->height * (end_fraction - start_fraction));
+  } else {
+    GtkBorder padding;
+    gtk_style_context_get_padding(style, gtk_style_context_get_state(style),
+                                  &padding);
+
+    paint_width = padding.left;
+    if (paint_width > rect->width) paint_width = rect->width;
+
+    gtk_render_line(style, cr, rect->x + (rect->width - paint_width) / 2,
+                    rect->y + rect->height * start_fraction,
+                    rect->x + (rect->width - paint_width) / 2,
+                    rect->y + rect->height * end_fraction);
+  }
+  return MOZ_GTK_SUCCESS;
+}
+
 static gint moz_gtk_tooltip_paint(cairo_t* cr, const GdkRectangle* aRect,
                                   GtkWidgetState* state,
                                   GtkTextDirection direction) {
@@ -1541,6 +1632,24 @@ gint moz_gtk_get_widget_border(WidgetNodeType widget, gint* left, gint* top,
       moz_gtk_add_style_border(style, left, top, right, bottom);
       return MOZ_GTK_SUCCESS;
     }
+    case MOZ_GTK_TREE_HEADER_CELL: {
+      /* A Tree Header in GTK is just a different styled button
+       * It must be placed in a TreeView for getting the correct style
+       * assigned.
+       * That is why the following code is the same as for MOZ_GTK_BUTTON.
+       * */
+      *left = *top = *right = *bottom = gtk_container_get_border_width(
+          GTK_CONTAINER(GetWidget(MOZ_GTK_TREE_HEADER_CELL)));
+      style = GetStyleContext(MOZ_GTK_TREE_HEADER_CELL);
+      moz_gtk_add_border_padding(style, left, top, right, bottom);
+      return MOZ_GTK_SUCCESS;
+    }
+    case MOZ_GTK_TREE_HEADER_SORTARROW:
+      w = GetWidget(MOZ_GTK_TREE_HEADER_SORTARROW);
+      break;
+    case MOZ_GTK_DROPDOWN_ARROW:
+      w = GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON);
+      break;
     case MOZ_GTK_DROPDOWN: {
       /* We need to account for the arrow on the dropdown, so text
        * doesn't come too close to the arrow, or in some cases spill
@@ -1694,6 +1803,24 @@ gint moz_gtk_get_tab_border(gint* left, gint* top, gint* right, gint* bottom,
       *right += margin.right;
     }
   }
+
+  return MOZ_GTK_SUCCESS;
+}
+
+gint moz_gtk_get_combo_box_entry_button_size(gint* width, gint* height) {
+  /*
+   * We get the requisition of the drop down button, which includes
+   * all padding, border and focus line widths the button uses,
+   * as well as the minimum arrow size and its padding
+   * */
+  GtkRequisition requisition;
+
+  gtk_widget_get_preferred_size(GetWidget(MOZ_GTK_COMBOBOX_ENTRY_BUTTON), NULL,
+                                &requisition);
+  moz_gtk_sanity_preferred_size(&requisition);
+
+  *width = requisition.width;
+  *height = requisition.height;
 
   return MOZ_GTK_SUCCESS;
 }
@@ -2013,6 +2140,13 @@ gint moz_gtk_widget_paint(WidgetNodeType widget, cairo_t* cr,
       return moz_gtk_text_view_paint(cr, rect, state, direction);
     case MOZ_GTK_DROPDOWN:
       return moz_gtk_combo_box_paint(cr, rect, state, direction);
+    case MOZ_GTK_DROPDOWN_ARROW:
+      return moz_gtk_combo_box_entry_button_paint(cr, rect, state, flags,
+                                                  direction);
+    case MOZ_GTK_TOOLBAR:
+      return moz_gtk_toolbar_paint(cr, rect, state, direction);
+    case MOZ_GTK_TOOLBAR_SEPARATOR:
+      return moz_gtk_toolbar_separator_paint(cr, rect, state, direction);
     case MOZ_GTK_TOOLTIP:
       return moz_gtk_tooltip_paint(cr, rect, state, direction);
     case MOZ_GTK_FRAME:
