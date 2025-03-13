@@ -400,15 +400,9 @@
    flex: 1;
    margin: 0;
  }
- 
+
  /* Toolbox and Toolbars */
  
-  :root[lwtheme] #navigator-toolbox {
-    background-image: var(--lwt-additional-images);
-    background-repeat: var(--lwt-background-tiling);
-    background-position: var(--lwt-background-alignment);
-  }
-
 /* TODO bug 1695280: Remove these media selectors and merge the rule below
    with the ruleset above. We must set background properties on :root and not
    #navigator-toolbox on Windows 7/8 due to a WebRender bug that hides the
