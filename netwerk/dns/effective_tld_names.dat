@@ -5,8 +5,8 @@
 // Please pull this list from, and only from https://publicsuffix.org/list/public_suffix_list.dat,
 // rather than any other VCS sites. Pulling from any other URL is not guaranteed to be supported.
 
-// VERSION: 2025-01-08_11-54-03_UTC
-// COMMIT: d1420f641cf8523ae758342e8b5661287718d33f
+// VERSION: 2025-03-11_13-50-55_UTC
+// COMMIT: 3dc28d7389f45a20dfca36284b84fae9d472c01c
 
 // Instructions on pulling and using this list can be found at https://publicsuffix.org/list/.
 
@@ -1945,9 +1945,6 @@ lg.jp
 ne.jp
 or.jp
 // jp prefecture type names
-// 2024-11-22: JPRS confirmed that regional .jp suffixes no longer accept new registrations.
-// Once all existing registrations expire (marking full discontinuation), these suffixes
-// will be removed from the PSL.
 aichi.jp
 akita.jp
 aomori.jp
@@ -2044,6 +2041,9 @@ yamanashi.jp
 鹿児島.jp
 // jp geographic type names
 // http://jprs.jp/doc/rule/saisoku-1.html
+// 2024-11-22: JPRS confirmed that jp geographic type names no longer accept new registrations.
+// Once all existing registrations expire (marking full discontinuation), these suffixes
+// will be removed from the PSL.
 *.kawasaki.jp
 !city.kawasaki.jp
 *.kitakyushu.jp
@@ -4034,13 +4034,20 @@ net.mk
 org.mk
 
 // ml : https://www.iana.org/domains/root/db/ml.html
+// Confirmed by Boubacar NDIAYE <bndiaye@agetic.gouv.ml> 2024-12-31
 ml
+ac.ml
+art.ml
+asso.ml
 com.ml
 edu.ml
 gouv.ml
 gov.ml
+info.ml
+inst.ml
 net.ml
 org.ml
+pr.ml
 presse.ml
 
 // mm : https://www.iana.org/domains/root/db/mm.html
@@ -5944,15 +5951,21 @@ zp.ua
 zt.ua
 
 // ug : https://www.registry.co.ug/
+// https://www.registry.co.ug, https://whois.co.ug
+// Confirmed by registry <support@i3c.co.ug> 2025-01-20
 ug
 ac.ug
 co.ug
 com.ug
+edu.ug
 go.ug
+gov.ug
+mil.ug
 ne.ug
 or.ug
 org.ug
 sc.ug
+us.ug
 
 // uk : https://www.iana.org/domains/root/db/uk.html
 // Submitted by registry <Michael.Daly@nominet.org.uk>
@@ -6258,6 +6271,7 @@ co.ve
 com.ve
 e12.ve
 edu.ve
+emprende.ve
 firm.ve
 gob.ve
 gov.ve
@@ -6274,7 +6288,9 @@ tec.ve
 web.ve
 
 // vg : https://www.iana.org/domains/root/db/vg.html
+// Confirmed by registry <tld.ops@centralnic.com> 2025-01-10
 vg
+edu.vg
 
 // vi : https://www.iana.org/domains/root/db/vi.html
 vi
@@ -6729,7 +6745,7 @@ org.zw
 
 // newGTLDs
 
-// List of new gTLDs imported from https://www.icann.org/resources/registries/gtlds/v2/gtlds.json on 2024-12-23T15:16:32Z
+// List of new gTLDs imported from https://www.icann.org/resources/registries/gtlds/v2/gtlds.json on 2025-02-28T15:18:00Z
 // This list is auto-generated, don't edit it manually.
 // aaa : American Automobile Association, Inc.
 // https://www.iana.org/domains/root/db/aaa.html
@@ -8167,7 +8183,7 @@ ftr
 // https://www.iana.org/domains/root/db/fujitsu.html
 fujitsu
 
-// fun : Radix Technologies Inc.
+// fun : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/fun.html
 fun
 
@@ -8499,7 +8515,7 @@ horse
 // https://www.iana.org/domains/root/db/hospital.html
 hospital
 
-// host : Radix Technologies Inc.
+// host : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/host.html
 host
 
@@ -8739,10 +8755,6 @@ kddi
 // https://www.iana.org/domains/root/db/kerryhotels.html
 kerryhotels
 
-// kerrylogistics : Kerry Trading Co. Limited
-// https://www.iana.org/domains/root/db/kerrylogistics.html
-kerrylogistics
-
 // kerryproperties : Kerry Trading Co. Limited
 // https://www.iana.org/domains/root/db/kerryproperties.html
 kerryproperties
@@ -8938,10 +8950,6 @@ lincoln
 // link : Nova Registry Ltd
 // https://www.iana.org/domains/root/db/link.html
 link
-
-// lipsy : Lipsy Ltd
-// https://www.iana.org/domains/root/db/lipsy.html
-lipsy
 
 // live : Dog Beach, LLC
 // https://www.iana.org/domains/root/db/live.html
@@ -9411,7 +9419,7 @@ ong
 // https://www.iana.org/domains/root/db/onl.html
 onl
 
-// online : Radix Technologies Inc.
+// online : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/online.html
 online
 
@@ -9615,7 +9623,7 @@ pramerica
 // https://www.iana.org/domains/root/db/praxi.html
 praxi
 
-// press : Radix Technologies Inc.
+// press : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/press.html
 press
 
@@ -10063,7 +10071,7 @@ sina
 // https://www.iana.org/domains/root/db/singles.html
 singles
 
-// site : Radix Technologies Inc.
+// site : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/site.html
 site
 
@@ -10143,7 +10151,7 @@ soy
 // https://www.iana.org/domains/root/db/spa.html
 spa
 
-// space : Radix Technologies Inc.
+// space : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/space.html
 space
 
@@ -10195,7 +10203,7 @@ stockholm
 // https://www.iana.org/domains/root/db/storage.html
 storage
 
-// store : Radix Technologies Inc.
+// store : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/store.html
 store
 
@@ -10311,7 +10319,7 @@ tdk
 // https://www.iana.org/domains/root/db/team.html
 team
 
-// tech : Radix Technologies Inc.
+// tech : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/tech.html
 tech
 
@@ -10495,7 +10503,7 @@ unicom
 // https://www.iana.org/domains/root/db/university.html
 university
 
-// uno : Radix Technologies Inc.
+// uno : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/uno.html
 uno
 
@@ -10659,7 +10667,7 @@ webcam
 // https://www.iana.org/domains/root/db/weber.html
 weber
 
-// website : Radix Technologies Inc.
+// website : Radix Technologies Inc SEZC
 // https://www.iana.org/domains/root/db/website.html
 website
 
@@ -11139,7 +11147,7 @@ yahoo
 // https://www.iana.org/domains/root/db/yamaxun.html
 yamaxun
 
-// yandex : ADC Tech Netherlands B.V.
+// yandex : YANDEX, LLC
 // https://www.iana.org/domains/root/db/yandex.html
 yandex
 
@@ -11313,6 +11321,10 @@ barsy.ca
 // Submitted by Mark J. Titorenko <mark.titorenko@alces-software.com>
 *.compute.estate
 *.alces.network
+
+// Alibaba Cloud API Gateway
+// Submitted by Alibaba Cloud Security <cloud_product_security_team@alibaba-inc.com>
+alibabacloudcs.com
 
 // all-inkl.com : https://all-inkl.com
 // Submitted by Werner Kaltofen <wk@all-inkl.com>
@@ -11932,7 +11944,7 @@ notebook.cn-northwest-1.sagemaker.com.cn
 
 // Amazon SageMaker Studio
 // Submitted by AWS Security <psl-maintainers@amazon.com>
-// Reference: 69c723d9-6e1a-4bff-a203-48eecd203183
+// Reference: 475f237e-ab88-4041-9f41-7cfccdf66aeb
 studio.af-south-1.sagemaker.aws
 studio.ap-east-1.sagemaker.aws
 studio.ap-northeast-1.sagemaker.aws
@@ -11944,6 +11956,7 @@ studio.ap-southeast-2.sagemaker.aws
 studio.ap-southeast-3.sagemaker.aws
 studio.ca-central-1.sagemaker.aws
 studio.eu-central-1.sagemaker.aws
+studio.eu-central-2.sagemaker.aws
 studio.eu-north-1.sagemaker.aws
 studio.eu-south-1.sagemaker.aws
 studio.eu-south-2.sagemaker.aws
@@ -12116,6 +12129,19 @@ awsglobalaccelerator.com
 // Reference: 83385945-225f-416e-9aa0-ad0632bfdcee
 *.private.repost.aws
 
+// AWS Transfer Family web apps
+// Submitted by AWS Security <psl-maintainers@amazon.com>
+// Reference: 67e9cfe6-ac57-49c7-b197-6652711c8e8d
+transfer-webapp.ap-northeast-1.on.aws
+transfer-webapp.ap-southeast-1.on.aws
+transfer-webapp.ap-southeast-2.on.aws
+transfer-webapp.eu-central-1.on.aws
+transfer-webapp.eu-north-1.on.aws
+transfer-webapp.eu-west-1.on.aws
+transfer-webapp.us-east-1.on.aws
+transfer-webapp.us-east-2.on.aws
+transfer-webapp.us-west-2.on.aws
+
 // eero
 // Submitted by Yue Kang <eero-dynamic-dns@amazon.com>
 // Reference: 264afe70-f62c-4c02-8ab9-b5281ed24461
@@ -12253,6 +12279,10 @@ blackbaudcdn.net
 // Submitted by Luke Bratch <luke@bratch.co.uk>
 of.je
 
+// Block, Inc. : https://block.xyz
+// Submitted by Jonathan Boice <security@block.xyz>
+square.site
+
 // Blue Bite, LLC : https://bluebite.com
 // Submitted by Joshua Weiss <admin.engineering@bluebite.com>
 bluebite.io
@@ -12280,6 +12310,9 @@ square7.net
 
 // Brave : https://brave.com
 // Submitted by Andrea Brancaleoni <abrancaleoni@brave.com>
+brave.app
+*.s.brave.app
+brave.io
 *.s.brave.io
 
 // Brendly : https://brendly.rs
@@ -12295,6 +12328,11 @@ browsersafetymark.io
 // Submitted by Gavin Brown <gavin.brown@centralnic.com>
 radio.am
 radio.fm
+
+// Bubble : https://bubble.io/
+// Submitted by Merlin Zhao <devops@bubble.io>
+cdn.bubble.io
+bubbleapps.io
 
 // Bytemark Hosting : https://www.bytemark.co.uk
 // Submitted by Paul Cammish <paul.cammish@bytemark.co.uk>
@@ -12606,6 +12644,7 @@ definima.net
 // Submitted by Luca Casonato <hostmaster@deno.com>
 deno.dev
 deno-staging.dev
+deno.net
 
 // deSEC : https://desec.io/
 // Submitted by Peter Thomassen <peter@desec.io>
@@ -13732,6 +13771,10 @@ in-vpn.net
 in-dsl.org
 in-vpn.org
 
+// Inferno Communications : https://inferno.co.uk
+// Submitted by Connor McFarlane <noc@inferno.co.uk>
+oninferno.net
+
 // info.at : http://www.info.at/
 biz.at
 info.at
@@ -13968,6 +14011,10 @@ krellian.net
 // Submitted by DisposaBoy <security@oya.to>
 oya.to
 
+// Laravel Holdings, Inc. : https://laravel.com
+// Submitted by André Valentin <security@laravel.com>
+laravel.cloud
+
 // LCube - Professional hosting e.K. : https://www.lcube-webhosting.de
 // Submitted by Lars Laehn <info@lcube.de>
 git-repos.de
@@ -14033,6 +14080,11 @@ ggff.net
 localcert.net
 localhostcert.net
 
+// Localtonet : https://localtonet.com/
+// Submitted by Burak Isleyici <support@localtonet.com>
+localtonet.com
+*.localto.net
+
 // Lodz University of Technology LODMAN regional domains : https://www.man.lodz.pl/dns
 // Submitted by Piotr Wilk <dns@man.lodz.pl>
 lodz.pl
@@ -14057,6 +14109,11 @@ lohmus.me
 // Lokalized : https://lokalized.nl
 // Submitted by Noah Taheij <noah@lokalized.nl>
 servers.run
+
+// Lovable : https://lovable.dev
+// Submitted by Fabian Hedin <security@lovable.dev>
+lovable.app
+lovableproject.com
 
 // LubMAN UMCS Sp. z o.o : https://lubman.pl/
 // Submitted by Ireneusz Maliszewski <ireneusz.maliszewski@lubman.pl>
@@ -14854,6 +14911,11 @@ itcouldbewor.se
 aus.basketball
 nz.basketball
 
+// ROBOT PAYMENT INC. : https://www.robotpayment.co.jp/
+// Submitted by Kentaro Takamori <takamori.kentaro@robotpayment.co.jp>
+subsc-pay.com
+subsc-pay.net
+
 // Rochester Institute of Technology : http://www.rit.edu/
 // Submitted by Jennifer Herting <jchits@rit.edu>
 git-pages.rit.edu
@@ -15417,7 +15479,7 @@ diskstation.org
 typedream.app
 
 // Typeform : https://www.typeform.com
-// Submitted by Sergi Ferriz <sergi.ferriz@typeform.com>
+// Submitted by Typeform <ops@typeform.com>
 pro.typeform.com
 
 // Uberspace : https://uberspace.de
@@ -15444,6 +15506,10 @@ unison-services.cloud
 // Submitted by Stefan Schwarz <sysadm@united-gameserver.de>
 virtual-user.de
 virtualuser.de
+
+// United States Writing Corporation : https://uswriting.co
+// Submitted by Andrew Sampson <security@obj.ag>
+obj.ag
 
 // UNIVERSAL DOMAIN REGISTRY : https://www.udr.org.yt/
 // see also: whois -h whois.udr.org.yt help
@@ -15501,6 +15567,10 @@ router.management
 // Submitted by Adnan RIHAN <hostmaster@v-info.info>
 v-info.info
 
+// Viva Republica, Inc. : https://toss.im/
+// Submitted by Deus Team <deus@toss.im>
+deus-canvas.com
+
 // Voorloper.com : https://voorloper.com
 // Submitted by Nathan van Bakel <info@voorloper.com>
 voorloper.cloud
@@ -15536,6 +15606,7 @@ pleskns.com
 wp2.host
 pdns.page
 plesk.page
+cpanel.site
 wpsquared.site
 
 // WebWaddle Ltd : https://webwaddle.com/
@@ -15651,6 +15722,10 @@ zap.cloud
 // Submitted by Zeabur Team <contact@zeabur.com>
 zeabur.app
 
+// Zerops : https://zerops.io/
+// Submitted by Zerops Team <security@zerops.io>
+*.zerops.app
+
 // Zine EOOD : https://zine.bg/
 // Submitted by Martin Angelov <martin@zine.bg>
 bss.design
@@ -15660,5 +15735,9 @@ bss.design
 basicserver.io
 virtualserver.io
 enterprisecloud.nu
+
+// Zone.ID: https://zone.id
+// Submitted by Gx1.org <security@gx1.org>
+zone.id
 
 // ===END PRIVATE DOMAINS===

@@ -2843,6 +2843,13 @@ static void SetCrashEventsDir(nsIFile* aDir) {
 }
 
 void SetProfileDirectory(nsIFile* aDir) {
+  // Record the profile directory for use by the crash reporter client.
+  {
+    nsAutoString path;
+    aDir->GetPath(path);
+    RecordAnnotationNSString(Annotation::ProfileDirectory, path);
+  }
+
   nsCOMPtr<nsIFile> dir;
   aDir->Clone(getter_AddRefs(dir));
 
@@ -3312,7 +3319,8 @@ static void MaybeAnnotateDumperError(const ClientInfo& aClientInfo,
                                      AnnotationTable& aAnnotations) {
 #if defined(MOZ_OXIDIZED_BREAKPAD)
   if (aClientInfo.had_error()) {
-    aAnnotations[Annotation::DumperError] = *aClientInfo.error_msg();
+    aAnnotations[Annotation::DumperError] =
+        nsDependentCString(aClientInfo.error_msg());
   }
 #endif
 }
